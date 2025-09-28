@@ -1,0 +1,215 @@
+// vim:fileencoding=utf-8:foldmethod=marker
+//
+//       __   __  __  __   __  __  __        ____    ___     ____    ____  
+//     /'__`\/\ \/\ \/\ \ /\ \/\ \/\ \      /',__\  /'___\  /',__\  /',__\ 
+//    /\  __/\ \ \_/ \_/ \\ \ \_/ \_/ \ __ /\__, `\/\ \__/ /\__, `\/\__, `\
+//    \ \____\\ \___x___/' \ \___x___/'/\_\\/\____/\ \____\\/\____/\/\____/
+//     \/____/ \/__//__/    \/__//__/  \/_/ \/___/  \/____/ \/___/  \/___/ 
+//                                                                          
+
+//: COLORS {{{
+
+$foreground: #c6c8d1;
+$background: #161821;
+$transparent: rgba($background, 0.80);
+
+$selection_background: #1e2132;
+$selection_foreground: #c6c8d1;
+  
+$cursor: #d2d4de;
+ 
+//black
+$black1: #1e2132;
+$black2: #6b7089;
+ 
+//red
+$red1: #FB8E88;
+$red2: #F9A39B;
+
+//green
+$green1: #6CCC99;
+$green2: #A1F8ED;
+
+//yellow/orange
+$yellow1: #EADA7B;
+$yellow2: #F8F7A6;
+
+//blue
+$blue1: #7AE0E0;
+$blue2: #82F0F4;
+ 
+//magenta
+$magenta1: #a093c7;
+$magenta2: #ada0d3;
+
+//cyan
+$cyan1: #89b8c2;
+$cyan2: #95c4ce;
+ 
+//white
+$white1: #c6c8d1;
+$white2: #d2d4de;
+//: }}}
+// FONTS {{{
+
+$victor: 'VictorMonoNerdFontMono';
+
+
+// }}}
+
+* {
+    all: unset; // Unsets everything so you can style everything from scratch
+    font-family: $victor;
+    background-color: $transparent;
+//    font-family: 'Victor Mono';
+  }
+
+.bar {
+  all: unset;
+}
+
+//: CLASSES {{{
+
+//: CLASSES FOR CLOCK WIDGET {{{
+.clockbox {
+  all: unset;
+  //text-transform: uppercase;
+}
+.hostlabel {
+  font-style: italic;
+  background-color: $white2;//$color7;
+  color: $transparent;
+  font-weight: bold;
+  //font-variant-ligatures: ;
+  padding: 0 10;
+  margin-bottom: 2;
+}
+.datelabel {
+  //text-transform: lowercase;
+  //background-color: $transparent; //$background;//$color7;
+  //font: 16px "VictorMono-Bold";
+  color: $white1;
+  font-weight: bold; 
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $white1;
+  border-width: 1;
+  border-style: solid;
+
+}
+.timelabel {
+  //background-color: $transparent; //$color7;
+  color: $white1;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $white1;
+  border-width: 1;
+  border-style: solid;
+}
+//: }}}
+
+//: {{{ WORKSPACE CSS
+.workspaces {
+  //background-color: $transparent; //$color7;
+  //font-family: $victor;
+  font-weight: bolder;
+  padding: 0 30;
+  margin-bottom: 2;
+  //margin-left: 2;
+  border-color: $white1;
+  border-width: 1;
+  border-style: solid;
+  
+    .workspace-button {
+  
+        &.exists,
+          &:hover {
+          color: gray;
+  
+          &.focused {
+            color: $white1;
+          }
+        }
+    }
+ 
+}
+
+//: }}}
+
+//: {{{ SYSTEMCSS
+.systembox{
+  all: unset;}
+.capslabelon {
+  //font-family: $victor;
+  background-color: $yellow2;//$color7;
+  color: $transparent;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $yellow2;
+  border-width: 1;
+  border-style: solid;
+}
+.iconcolor-on{
+  color: $transparent;
+  background-color: $yellow2;
+}
+.iconcolor-off{
+  color: grey;
+  background-color: $transparent;
+}
+.capslabeloff {
+  background-color: $transparent;//$color7;
+  color: grey;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: grey;
+  border-width: 1;
+  border-style: solid;
+}
+
+.batteryred {
+  //font-family: $victor;
+  //background-color: $transparent;//$background;//$color7;
+  color: $red1;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $red2;
+  border-width: 1;
+  border-style: solid;  
+}
+.batteryorange {
+  //font-family: $victor;
+  //background-color: $transparent; //$background;//$color7;
+  color: $yellow1;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $yellow1;
+  border-width: 1;
+  border-style: solid;  
+}
+.batterygreen {
+  //font-family: $victor;
+  //background-color: $transparent;//$color7;
+  color: $green1;
+  font-weight: bolder;
+  padding: 0 10;
+  margin-bottom: 2;
+  margin-left: 2;
+  border-color: $green1;
+  border-width: 1;
+  border-style: solid;  
+}
+//:}}}
+
+//: }}}

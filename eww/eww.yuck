@@ -1,0 +1,179 @@
+; vim:fileencoding=utf-8:foldmethod=marker
+;                                                            /\ \        
+;   __   __  __  __   __  __  __      __  __   __  __    ___ \ \ \/'\    
+; /'__`\/\ \/\ \/\ \ /\ \/\ \/\ \    /\ \/\ \ /\ \/\ \  /'___\\ \ , <    
+;/\  __/\ \ \_/ \_/ \\ \ \_/ \_/ \ __\ \ \_\ \\ \ \_\ \/\ \__/ \ \ \\`\  
+;\ \____\\ \___x___/' \ \___x___/'/\_\\/`____ \\ \____/\ \____\ \ \_\ \_\
+; \/____/ \/__//__/    \/__//__/  \/_/ `/___/> \\/___/  \/____/  \/_/\/_/
+;                                         /\___/                         
+;                                         \/__/                          
+; ##############################################################################
+; WELCOME, THIS IS THE MAIN CONFIG FOR THE PSEUDO MINIMAL AND IN DEVELOPMENT ###
+; S I D O N I A   PROJECT, eww.yuck for the widgets, workspaces, systray.    ###
+; ##############################################################################
+
+; ######################
+; var ##################
+; ######################
+;(defvar battery-level batterystate)
+
+; ######################
+; poll #################
+; ######################
+
+;(defpoll time :interval "5s"
+;  :initial "initializing.."
+;  ;:run-while time-visible = true
+;`date +'time: %H:%M'`
+;`date +'%H:%M'`)
+
+; {{{ WIDGETS
+; {{{ CLOCK WIDGET (includes date and username)
+(defwidget clock []
+  (box :class "clockbox" 
+       ;:width 150
+       ;:height 20 
+       :halign "start"
+       :space-evenly false
+        (label :class "hostlabel"     ;I named it with the intention of putting
+               :text "S I D O N I A"  ;the hostname as a pretty label but instead 
+                                      ;just hardcoded a name
+        )
+        (label :class "datelabel"
+          :markup ""
+          :text "${formattime(EWW_TIME, "%m.%d")}"
+          ;:css {text-transform: uppercase;}
+
+        )
+        (label :class "timelabel"
+          :text {formattime(EWW_TIME, "%H:%M")}
+        )
+  )
+)
+;}}}
+
+; {{{ WORKSPACES WIDGET
+
+(defvar WORKSPACE_ICONS '["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]')
+(deflisten workspaces_json "scripts/workspaces.py")
+
+(defwidget workspaces []
+  (eventbox
+    ;:onscroll "echo {} | sed -e 's/up/-1/g' -e 's/down/+1/g' | xargs hyprctl dispatch workspace"
+    (box :class "workspaces"
+         :spacing 20
+         :orientation "horizontal"
+         :halign "center"
+         (for workspaces in "${workspaces_json.workspaces}"
+          (workspace-button :id workspaces))
+    )
+  )
+)
+
+(defwidget workspace-button [id]
+  (button
+    :class "workspace-button${matches(workspaces_json.workspaces, id) ? ' exists' : ''}${id == workspaces_json.focused ? ' focused' : ''}"
+    ;:onclick "hyprctl dispatch workspace ${id}"
+    ;:onrightclick "~/.config/hypr/scripts/workspace.sh ${id}"
+    {WORKSPACE_ICONS[id - 1]}))
+
+;}}}
+
+;{{{ SYSTRAY WIDGET
+(defpoll caps_value :interval "1s" `cat /sys/class/leds/input*:capslock/brightness`)
+(defwidget system []
+  (box :halign "end" :class "systembox" :space-evenly false
+
+    ;SYSTRAY
+    ;////////////UNDER DEVELOPMENT/////////////
+
+
+
+    ;CAPS INDICATOR
+    (box 
+    :space-evenly false
+    :class "${caps_value != 0 ? "capslabelon" : "capslabeloff"}"
+
+      (image :icon "${caps_value != 0 ? "capslock-enabled-symbolic" : "capslock-disabled-symbolic"}"
+             :class "${caps_value != 0 ? "iconcolor-on" : "iconcolor-off"}"
+             :icon-size "large-toolbar"
+      );imageend
+
+    );boxend
+
+
+    ;BATTERY INDICATOR
+    (box :orientation "h" :space-evenly false :spacing 5 
+      ;Basically just changing color via css depending on the battery level
+      ;Remember the -<idk what is called here>- function  "eval ? a : b"
+      :class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }" }"
+
+      ;ICON-SIZE includes "dialog", "small-toolbar", "large-toolbar" and menu,button,dnd but not work properly
+      ;(image :icon "battery-symbolic" :icon-size "menu") 
+      ;This is actually NOT needed, lol -> "~/.local/share/icons/White-Icons/scallable/devices/battery-symbolic.svg"
+
+      (label :class "batterylabel"
+        ;:icon "battery-symbolic"
+        ;in order to asing the color based on percentage, a function inside a func to add three posible states
+        ;here you set the class name that will be readed/asigned -~from file.scss~- to the element 
+        ;:class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }"  }" 
+        :text  "${EWW_BATTERY.BAT0.status == "Charging" ? "CHARGING -| ${EWW_BATTERY.BAT0.capacity}% |-" 
+                    : "${EWW_BATTERY.BAT0.capacity <= 5 ? "CRITICAL -| ${EWW_BATTERY.BAT0.capacity}% |-" : "RSOC -| ${EWW_BATTERY.BAT0.capacity}% |-"}" }" )
+    )
+  )  
+)
+;}}}
+
+; {{{ DECALS
+(defwidget decals []
+    (box :class "decals")
+)
+;}}}
+
+; }}}
+
+
+; ###############################################################################
+; "WINDOW" DEFINITIONS ##########################################################
+; ###############################################################################
+; {{{ WINDOW DEFINITIONS
+(defwindow bar
+  :class "bar"
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "20px"
+                      ;:vexpand false false by default
+                      :anchor "top center")
+  :exclusive true
+  :stacking "bg"
+  ;:reserve (struts :distance "40px" :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+   (centerbox ;:class "barbox" 
+        ;:orientation "h"
+        ;:space-evenly false
+    (clock)
+    (workspaces)
+    (system)
+  )
+)
+
+
+(defwindow hud
+  :class "hud"
+  :monitor 0
+  :geometry (geometry :x "%"
+              :y "%"
+              :width "98%"
+              :height "90%"
+              :anchor "top center")
+  :stacking "bg"
+  :wm-ignore true
+
+  "THIS IS THE HUD"
+)
+
+;}}}
+

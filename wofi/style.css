@@ -1,0 +1,116 @@
+/*
+$foreground: #c6c8d1;
+$background: #161821;
+$transparent: rgba($background, 0.80);
+$selection_background: #1e2132;
+$selection_foreground: #c6c8d1;
+$cursor: #d2d4de; 
+//black
+$black1: #1e2132;
+$black2: #6b7089;
+ 
+//red
+$red1: #e27878;
+$red2: #e98989;
+
+//green
+$green1: #b4be82;
+$green2: #c0ca8e;
+
+//yellow/orange
+$yellow1: #e2a478;
+$yellow2: #e9b189;
+
+//blue
+$blue1: #84a0c6;
+$blue2: #91acd1;
+ 
+//magenta
+$magenta1: #a093c7;
+$magenta2: #ada0d3;
+
+//cyan
+$cyan1: #89b8c2;
+$cyan2: #95c4ce;
+ 
+//white
+$white1: #c6c8d1;
+$white2: #d2d4de;
+*/
+
+*{	
+	font-family: "VictorMonoNerdFontMono";
+	font-weight: 500;
+	border: none;
+
+}
+
+
+window {
+	
+	margin: 5px;
+	border: 2px solid #c6c8d1;
+	background-color: rgba(16,18,21,0.88);
+}
+
+#input {
+	font-style: italic;
+	font-weight: bold;
+	margin: 5px;
+	color: #c6c8d1;
+	border: 2px solid #c6c8d1;
+	border-radius: 0;
+	background-color: #161821;
+}
+
+#inner-box {
+	margin: 0px;
+	border: none;
+	background-color: transparent;
+}
+
+#outer-box {
+	margin: 0px;
+	border: none;
+	background-color: transparent;
+}
+
+#scroll {
+	margin: 5px;
+	border: none;
+	background-color: transparent;
+}
+
+#text {
+	color: #c6c8d1;
+	margin: 5px;
+	/*border: 2px solid #161821;*/
+	background-color: transparent;
+}
+
+#entry {
+	background-color: transparent;
+}
+
+/*
+#scrollbar:scroll {
+	border: 2px solid #c0ca8e;
+	background-color: #c0ca8e;
+}*/
+
+#entry:selected {
+	background-color: transparent;
+	border: 1px solid #91acd1;
+}
+
+#text:selected {
+	background-color: transparent;
+	/*font-weight: bold;*/
+	color: #91acd1;
+	border: none;
+}
+
+/*#input:focus {
+	border: 1px solid #91acd1;
+}*/
+
