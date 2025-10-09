@@ -23,16 +23,16 @@ $black1: #1e2132;
 $black2: #6b7089;
  
 //red
-$red1: #FB8E88;
-$red2: #F9A39B;
+$red1: #e27878;
+$red2: #e98989;
 
 //green
-$green1: #6CCC99;
-$green2: #A1F8ED;
+$green1: #b4be82;
+$green2: #c0ca8e;
 
 //yellow/orange
 $yellow1: #EADA7B;
-$yellow2: #F8F7A6;
+$yellow2: #e9b189;//#F8F7A6;
 
 //blue
 $blue1: #7AE0E0;
@@ -42,7 +42,7 @@ $blue2: #82F0F4;
 $magenta1: #a093c7;
 $magenta2: #ada0d3;
 
-//cyan
+//
 $cyan1: #89b8c2;
 $cyan2: #95c4ce;
  
@@ -144,19 +144,19 @@ $victor: 'VictorMonoNerdFontMono';
   all: unset;}
 .capslabelon {
   //font-family: $victor;
-  background-color: $yellow2;//$color7;
+  background-color: $yellow1;//$color7;
   color: $transparent;
   font-weight: bolder;
   padding: 0 10;
   margin-bottom: 2;
   margin-left: 2;
-  border-color: $yellow2;
+  border-color: $yellow1;
   border-width: 1;
   border-style: solid;
 }
 .iconcolor-on{
   color: $transparent;
-  background-color: $yellow2;
+  background-color: $yellow1;
 }
 .iconcolor-off{
   color: grey;
