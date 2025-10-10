@@ -12,10 +12,19 @@
 ; S I D O N I A   PROJECT, eww.yuck for the widgets, workspaces, systray.    ###
 ; ##############################################################################
 
+;{{{ VARIABLES
 ; ######################
 ; var ##################
 ; ######################
-;(defvar battery-level batterystate)
+(defvar hostname "SIDONIA")
+;(defvar vol_level "0%" )
+
+
+;///////under dev
+;(deflisten vol_level :initial 0
+;    `echo /scripts/volume_now`)
+
+
 
 ; ######################
 ; poll #################
@@ -26,23 +35,23 @@
 ;  ;:run-while time-visible = true
 ;`date +'time: %H:%M'`
 ;`date +'%H:%M'`)
+;}}}
+
 
 ; {{{ WIDGETS
-; {{{ CLOCK WIDGET (includes date and username)
+
+; {{{ CLOCK WIDGET (includes date and username) 
 (defwidget clock []
   (box :class "clockbox" 
-       ;:width 150
-       ;:height 20 
        :halign "start"
        :space-evenly false
-        (label :class "hostlabel"     ;I named it with the intention of putting
-               :text "S I D O N I A"  ;the hostname as a pretty label but instead 
-                                      ;just hardcoded a name
+        (label :class "hostlabel"  
+               :text hostname      
+                                       
         )
         (label :class "datelabel"
           :markup ""
-          :text "${formattime(EWW_TIME, "%m.%d")}"
-          ;:css {text-transform: uppercase;}
+          :text {formattime(EWW_TIME, "%m.%d")}
 
         )
         (label :class "timelabel"
@@ -64,7 +73,7 @@
          :spacing 20
          :orientation "horizontal"
          :halign "center"
-         (for workspaces in "${workspaces_json.workspaces}"
+         (for workspaces in {workspaces_json.workspaces}
           (workspace-button :id workspaces))
     )
   )
@@ -79,27 +88,31 @@
 
 ;}}}
 
-;{{{ SYSTRAY WIDGET
+;{{{ QUICK SYS INFO systray, caps status, battery level
 (defpoll caps_value :interval "1s" `cat /sys/class/leds/input*:capslock/brightness`)
-(defwidget system []
+
+;(deflisten caps_value :initial 0 `tail -f /sys/class/leds/input*:capslock/brightness`)  
+(defwidget qsysinfo []
+  
   (box :halign "end" :class "systembox" :space-evenly false
 
     ;SYSTRAY
     ;////////////UNDER DEVELOPMENT/////////////
+    (systray :spacing 2 :orientation "h" :space-evenly true )
 
 
 
     ;CAPS INDICATOR
     (box 
     :space-evenly false
-    :class "${caps_value != 0 ? "capslabelon" : "capslabeloff"}"
+    :class {caps_value != 0 ? "capslabelon" : "capslabeloff"}
 
-      (image :icon "${caps_value != 0 ? "capslock-enabled-symbolic" : "capslock-disabled-symbolic"}"
-             :class "${caps_value != 0 ? "iconcolor-on" : "iconcolor-off"}"
+      (image :icon {caps_value != 0 ? "capslock-enabled-symbolic" : "capslock-disabled-symbolic"}
+             :class {caps_value != 0 ? "iconcolor-on" : "iconcolor-off"}
              :icon-size "large-toolbar"
-      );imageend
+      );image.end
 
-    );boxend
+    );box.end
 
 
     ;BATTERY INDICATOR
@@ -119,10 +132,18 @@
         ;:class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }"  }" 
         :text  "${EWW_BATTERY.BAT0.status == "Charging" ? "CHARGING -| ${EWW_BATTERY.BAT0.capacity}% |-" 
                     : "${EWW_BATTERY.BAT0.capacity <= 5 ? "CRITICAL -| ${EWW_BATTERY.BAT0.capacity}% |-" : "RSOC -| ${EWW_BATTERY.BAT0.capacity}% |-"}" }" )
+      
     )
+    
+;    ;///VOLUME INDICATOR under dev
+;    (label
+;      :text vol_level
+;    )
+
   )  
 )
 ;}}}
+
 
 ; {{{ DECALS
 (defwidget decals []
@@ -133,9 +154,6 @@
 ; }}}
 
 
-; ###############################################################################
-; "WINDOW" DEFINITIONS ##########################################################
-; ###############################################################################
 ; {{{ WINDOW DEFINITIONS
 (defwindow bar
   :class "bar"
@@ -144,19 +162,15 @@
                       :y "0%"
                       :width "100%"
                       :height "20px"
-                      ;:vexpand false false by default
                       :anchor "top center")
   :exclusive true
   :stacking "bg"
-  ;:reserve (struts :distance "40px" :side "top")
   :windowtype "dock"
   :wm-ignore false
-   (centerbox ;:class "barbox" 
-        ;:orientation "h"
-        ;:space-evenly false
+  (centerbox  
     (clock)
     (workspaces)
-    (system)
+    (qsysinfo)
   )
 )
 
@@ -176,4 +190,5 @@
 )
 
 ;}}}
+
 
