@@ -1,13 +1,13 @@
---    ___                                    ___                        
---   /\_ \                                  /\_ \                       
---   \//\ \       __     ____    __  __     \//\ \    __  __     __     
---     \ \ \    /'__`\  /\_ ,`\ /\ \/\ \      \ \ \  /\ \/\ \  /'__`\   
---      \_\ \_ /\ \L\.\_\/_/  /_\ \ \_\ \   __ \_\ \_\ \ \_\ \/\ \L\.\_ 
+--    ___                                    ___
+--   /\_ \                                  /\_ \
+--   \//\ \       __     ____    __  __     \//\ \    __  __     __
+--     \ \ \    /'__`\  /\_ ,`\ /\ \/\ \      \ \ \  /\ \/\ \  /'__`\
+--      \_\ \_ /\ \L\.\_\/_/  /_\ \ \_\ \   __ \_\ \_\ \ \_\ \/\ \L\.\_
 --     /\_____\\ \__/.\_\ /\____\\/`____ \ /\_\/\____\\ \____/\ \__/.\_\
 --     \/_____/ \/__/\/_/ \/____/ `/___/> \\/_/\/____/ \/___/  \/__/\/_/
---                                   /\___/                             
+--                                   /\___/
 --                                   \/__/
--- 
+--
 -- -------------------------------------------------------------------------------------------------------------------
 -- THIS IS THE lazy.lua FILE CONFIG FOR THE   S I D O N I A   PROJECT, IT GETS THE LAZY.NVIM PLUGIN MANAGER WORKING --
 -- AND SETS MOST OF THE IMPORTANT CONFIGS TO MAKE NVIM MORE LIKE THE EDITOR I NEED                                  --
@@ -21,8 +21,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	if vim.v.shell_error ~= 0 then
 		vim.api.nvim_echo({
 			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{out, "WarningMsg" },
-			{"\nPress any key to exit..." },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
 		}, true, {})
 		vim.fn.getchar()
 		os.exit(1)
@@ -30,14 +30,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
-
 -- ------------------------------------------------------------------------------------------------
 -- GENERAL VIM CONFIGURATION ----------------------------------------------------------------------
 vim.g.mapleader = " "
 vim.gmaplocalleader = "\\"
 
-vim.cmd([[set whichwrap+=<,>,h,l]])--this enables line jumping using h or l at end of line
+vim.cmd([[set whichwrap+=<,>,h,l]]) --this enables line jumping using h or l at end of line
 vim.wo.wrap = false -- <- THIS WORKS
 vim.go.splitright = true
 vim.go.cmdheight = 0 -- <-THIS WORKS!
@@ -53,35 +51,64 @@ vim.wo.numberwidth = 4
 -- ------------------------------------------------------------------------------------------------
 
 -- CONFIGURING VIM FOR VIMTEX epic if u ask me
-vim.g.vimtex_view_method = 'zathura'
-vim.g.vimtex_compiler_method = 'latexmk'
-vim.g.UltiSnipsExpandTrigger='<tab>'
-vim.g.UltiSnipsJumpForwardTrigger='<c-b>'
-vim.g.UltiSnipsJumpBackwardTrigger='<c-z>'
+vim.g.vimtex_view_method = "zathura"
+vim.g.vimtex_compiler_method = "latexmk"
+vim.g.UltiSnipsExpandTrigger = "<tab>"
+vim.g.UltiSnipsJumpForwardTrigger = "<c-b>"
+vim.g.UltiSnipsJumpBackwardTrigger = "<c-z>"
+
+-- TIDAL CYCLES autocompletion setup ----------------------------------------
+--autocmd FileType tidal call s:tidal_abbr()
+--function! s:tidal_abbr()
+--    inoreabbr billybd "[t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~]"
+--    inoreabbr billysn "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
+--    inoreabbr billych "[t ~ t ~] [t ~ t ~] [t ~ t ~] [t ~ t ~]"
+--    inoreabbr bluemondaybd "[t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~]"
+--    inoreabbr bluemondaysn "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
+--    inoreabbr bluemondaycp "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
+--    inoreabbr bluemondayoh "[~ ~ t ~] [~ ~ t ~] [~ ~ t ~] [~ ~ t ~]"
+--endfunction
 
 -- lazy.nvim configuration ------------------------------------------------------------------------
 require("lazy").setup({
 	spec = {
 		-- import plugins, go to lua/plugins/ to manage all plugins
 		{ import = "plugins" },
-	-- ---------------------
-	-- Colorscheme ------ --
-	-- ---------------------
-	{
-        --HERE I LOAD THE COLORCHEME, since it is essential for
-        --the looks and feels
-		"cocopon/iceberg.vim",
-		lazy = false,
-		priority = 1000,
+		-- ---------------------
+		-- Colorscheme ------ --
+		-- ---------------------
+		{
+			--HERE I LOAD THE COLORCHEME, since it is essential for
+			--the looks and feels
+			"cocopon/iceberg.vim",
+			lazy = false,
+			priority = 1000,
 
-		config = function ()
-			vim.cmd([[colorscheme iceberg]])
-		end,
-	},
-
-
+			config = function()
+				vim.cmd([[colorscheme iceberg]])
+			end,
+		},
 	},
 	checker = { enabled = true },
 	rocks = { enabled = false },
 })
 
+-- CONFORM SETUP ----
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		-- Conform will run multiple formatters sequentially
+		python = { "isort", "black" },
+		--         -- You can customize some of the format options for the filetype (:help conform.format)
+		rust = { "rustfmt", lsp_format = "fallback" },
+		--                 -- Conform will run the first available formatter
+		javascript = { "prettierd", "prettier", stop_after_first = true },
+	},
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		require("conform").format({ bufnr = args.buf })
+	end,
+})
