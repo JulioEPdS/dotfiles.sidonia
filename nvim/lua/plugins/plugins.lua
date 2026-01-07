@@ -88,7 +88,7 @@ return {
 					args = {},
 					--- SuperCollider boot file
 					file = vim.api.nvim_get_runtime_file("bootfiles/BootSuperDirt.scd", false)[1],
-					enabled = false,
+					enabled = true,
 				},
 				split = "v",
 			},
@@ -97,10 +97,10 @@ return {
 			--- @type table | nil
 			mappings = {
 				send_line = { mode = { "i", "n" }, key = "<leader>sl" },
-				send_visual = { mode = { "x" }, key = "<S-CR>" },
-				send_block = { mode = { "i", "n", "x" }, key = "<M-CR>" },
-				send_node = { mode = "n", key = "<leader><CR>" },
-				send_silence = { mode = "n", key = "<leader>d" },
+				send_visual = { mode = { "x" }, key = "<leader>sv" },
+				send_block = { mode = { "i", "n", "x" }, key = "<leader>sb" },
+				send_node = { mode = "n", key = "<leader>sn" },
+				send_silence = { mode = "n", key = "<leader>ss" },
 				send_hush = { mode = "n", key = "<leader><Esc>" },
 			},
 			---- Configure highlight applied to selections sent to tidal interpreter

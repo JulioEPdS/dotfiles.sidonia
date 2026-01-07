@@ -61,6 +61,7 @@ $victor: 'VictorMonoNerdFontMono';
     all: unset; // Unsets everything so you can style everything from scratch
     font-family: $victor;
     background-color: $transparent;
+    //color: $white1;
 //    font-family: 'Victor Mono';
   }
 
@@ -113,8 +114,6 @@ $victor: 'VictorMonoNerdFontMono';
 
 //: {{{ WORKSPACE CSS
 .workspaces {
-  //background-color: $transparent; //$color7;
-  //font-family: $victor;
   font-weight: bolder;
   padding: 0 30;
   margin-bottom: 2;
@@ -142,6 +141,7 @@ $victor: 'VictorMonoNerdFontMono';
 //: {{{ SYSTEMCSS
 .systembox{
   all: unset;}
+
 .capslabelon {
   //font-family: $victor;
   background-color: $yellow1;//$color7;
@@ -175,8 +175,6 @@ $victor: 'VictorMonoNerdFontMono';
 }
 
 .batteryred {
-  //font-family: $victor;
-  //background-color: $transparent;//$background;//$color7;
   color: $red1;
   font-weight: bolder;
   padding: 0 10;
@@ -187,8 +185,6 @@ $victor: 'VictorMonoNerdFontMono';
   border-style: solid;  
 }
 .batteryorange {
-  //font-family: $victor;
-  //background-color: $transparent; //$background;//$color7;
   color: $yellow1;
   font-weight: bolder;
   padding: 0 10;
@@ -199,8 +195,6 @@ $victor: 'VictorMonoNerdFontMono';
   border-style: solid;  
 }
 .batterygreen {
-  //font-family: $victor;
-  //background-color: $transparent;//$color7;
   color: $green1;
   font-weight: bolder;
   padding: 0 10;

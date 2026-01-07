@@ -89,7 +89,7 @@
 ;}}}
 
 ;{{{ QUICK SYS INFO systray, caps status, battery level
-(defpoll caps_value :interval "1s" `cat /sys/class/leds/input*:capslock/brightness`)
+(defpoll caps_value :interval "0.2s" `cat /sys/class/leds/input*:capslock/brightness`)
 
 ;(deflisten caps_value :initial 0 `tail -f /sys/class/leds/input*:capslock/brightness`)  
 (defwidget qsysinfo []
@@ -98,20 +98,43 @@
 
     ;SYSTRAY
     ;////////////UNDER DEVELOPMENT/////////////
-    (systray :spacing 2 :orientation "h" :space-evenly true )
+    (systray 
+      :spacing 2 
+      :orientation "h" 
+      :space-evenly true 
+    )
 
+    ;VOLUME/BRIGHTNESS INDICATOR
+    (box
+      :space-evenly true
+      :class "VBIndicator"
+      (progress
+        :class "VIndicator"
+        :value 50
+        :orientation "h"
+      )
+      (progress
+        :class "BIndicator"
+        :value 50
+        :orientation "h"
+      )
+    );box.end --VOLUME/BRIGHTMESS
 
 
     ;CAPS INDICATOR
     (box 
     :space-evenly false
     :class {caps_value != 0 ? "capslabelon" : "capslabeloff"}
-
-      (image :icon {caps_value != 0 ? "capslock-enabled-symbolic" : "capslock-disabled-symbolic"}
-             :class {caps_value != 0 ? "iconcolor-on" : "iconcolor-off"}
+      (image :icon { caps_value != 0 ? 
+                        "capslock-enabled-symbolic" 
+                        : "capslock-disabled-symbolic"
+                    }
+             :class { caps_value != 0 ? 
+                        "iconcolor-on" 
+                        : "iconcolor-off"
+                    }
              :icon-size "large-toolbar"
       );image.end
-
     );box.end
 
 
@@ -119,29 +142,30 @@
     (box :orientation "h" :space-evenly false :spacing 5 
       ;Basically just changing color via css depending on the battery level
       ;Remember the -<idk what is called here>- function  "eval ? a : b"
-      :class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }" }"
-
-      ;ICON-SIZE includes "dialog", "small-toolbar", "large-toolbar" and menu,button,dnd but not work properly
-      ;(image :icon "battery-symbolic" :icon-size "menu") 
-      ;This is actually NOT needed, lol -> "~/.local/share/icons/White-Icons/scallable/devices/battery-symbolic.svg"
+      :class "${EWW_BATTERY.BAT0.capacity > 50 ? 
+                  "batterygreen"  
+                  : "${EWW_BATTERY.BAT0.capacity > 15 ?
+                        "batteryorange" 
+                        : "batteryred" 
+                      }" 
+              }"
 
       (label :class "batterylabel"
         ;:icon "battery-symbolic"
         ;in order to asing the color based on percentage, a function inside a func to add three posible states
         ;here you set the class name that will be readed/asigned -~from file.scss~- to the element 
         ;:class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }"  }" 
-        :text  "${EWW_BATTERY.BAT0.status == "Charging" ? "CHARGING -| ${EWW_BATTERY.BAT0.capacity}% |-" 
-                    : "${EWW_BATTERY.BAT0.capacity <= 5 ? "CRITICAL -| ${EWW_BATTERY.BAT0.capacity}% |-" : "RSOC -| ${EWW_BATTERY.BAT0.capacity}% |-"}" }" )
-      
-    )
-    
-;    ;///VOLUME INDICATOR under dev
-;    (label
-;      :text vol_level
-;    )
-
-  )  
-)
+        :text  "${EWW_BATTERY.BAT0.status == "Charging" ? 
+                  "CHARGING -| ${EWW_BATTERY.BAT0.capacity}% |-" 
+                  : "${EWW_BATTERY.BAT0.capacity <= 5 ? 
+                        "CRITICAL -| ${EWW_BATTERY.BAT0.capacity}% |-" 
+                        : "RSOC -| ${EWW_BATTERY.BAT0.capacity}% |-"
+                      }";secondlambda.end
+                }";firstlambda.end 
+      );label.end
+    );box.end -- BATTERY
+  );mainbox.end
+);defwidwet.end
 ;}}}
 
 
