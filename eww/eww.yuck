@@ -16,7 +16,7 @@
 ; ######################
 ; var ##################
 ; ######################
-(defvar hostname "SIDONIA")
+(deflisten hostname `cat /etc/hostname`);"SIDONIA")
 ;(defvar vol_level "0%" )
 
 
