@@ -12,7 +12,6 @@
 -- -----------------------------------------------------------------------------------
 
 return {
-
 	--Devicons
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
 
@@ -45,9 +44,37 @@ return {
 	},
 
 	--CONFORM --------------------------------------------
+
 	{
 		"stevearc/conform.nvim",
-		opts = {},
+		opts = {
+			-- Configure formatters by filetype
+			formatters_by_ft = {
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				typescriptreact = { "prettier" },
+				json = { "prettier" },
+				markdown = { "prettier" },
+				jsonc = { "prettier" },
+				lua = { "stylua" },
+			},
+			-- Define the custom command for deno_fmt
+			-- Optional: set up format-on-save
+			format_on_save = {
+				timeout_ms = 500,
+				lsp_format = "fallback",
+			},
+		},
+		-- Optional: add a keymap to manually trigger format
+		keys = {
+			{
+				"<leader>lf",
+				function()
+					require("conform").format()
+				end,
+				desc = "Format file",
+			},
+		},
 	},
 
 	--
@@ -60,192 +87,38 @@ return {
 		opts = { enable_cmds = true },
 	},
 
-	-- VIMTEX
+	-- BETTER TERM
 	{
-		"lervag/vimtex",
-		lazy = false,
-		-- tag = "v2.15", -- uncomment to pin to a specific release
-	},
-
-	-- TIDAL.NVIM
-	{
-		"grddavies/tidal.nvim",
-		opts = {
-			boot = {
-				tidal = {
-					--- Command to launch ghci with tidal installation
-					cmd = "ghci",
-					args = {
-						"-v0",
-					},
-					---                                 --- Tidal boot file path
-					file = vim.api.nvim_get_runtime_file("bootfiles/BootTidal.hs", false)[1],
-					enabled = true,
-				},
-				sclang = {
-					--- Command to launch SuperCollider
-					cmd = "sclang",
-					args = {},
-					--- SuperCollider boot file
-					file = vim.api.nvim_get_runtime_file("bootfiles/BootSuperDirt.scd", false)[1],
-					enabled = true,
-				},
-				split = "v",
-			},
-			--- Default keymaps
-			--- Set to false to disable all default mappings
-			--- @type table | nil
-			mappings = {
-				send_line = { mode = { "i", "n" }, key = "<leader>sl" },
-				send_visual = { mode = { "x" }, key = "<leader>sv" },
-				send_block = { mode = { "i", "n", "x" }, key = "<leader>sb" },
-				send_node = { mode = "n", key = "<leader>sn" },
-				send_silence = { mode = "n", key = "<leader>ss" },
-				send_hush = { mode = "n", key = "<leader><Esc>" },
-			},
-			---- Configure highlight applied to selections sent to tidal interpreter
-			selection_highlight = {
-				--- Highlight definition table
-				--- see ':h nvim_set_hl' for details
-				--- @type vim.api.keyset.highlight
-				highlight = { link = "IncSearch" },
-				--- Duration to apply the highlight for
-				timeout = 150,
-			},
-		},
-		-- 				-- Recommended: Install TreeSitter parsers for Haskell and SuperCollider
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			opts = { ensure_installed = { "haskell", "supercollider" } },
-		},
-	},
-
-	-- Ultisnips
-	--    {
-	--	    'SirVer/ultisnips',
-	--	    lazy = false,
-	--    },
-
-	-- for Ultisnips , snipets plugin
-	--    {
-	--	    'honza/vim-snippets',
-	--	    lazy = false,
-	--    },
-
-	--  {
-	--TERM PLUGIN
-	--	      -- amongst your other plugins
-	--	      {'akinsho/toggleterm.nvim', version = "*", config = true}
-	--	      --     -- or
-	--	      --       {'akinsho/toggleterm.nvim', version = "*", opts = {--[[ things you want to change go here]]}}
-	--    },
-
-	{
-		"adalessa/laravel.nvim",
-		dependencies = {
-			"tpope/vim-dotenv",
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-neotest/nvim-nio",
-			"ravitemer/mcphub.nvim", -- optional
-		},
-		cmd = { "Laravel" },
+		"CRAG666/betterTerm.nvim",
 		keys = {
 			{
-				"<leader>ll",
+				mode = { "n", "t" },
+				"<C-,>",
 				function()
-					Laravel.pickers.laravel()
+					require("betterTerm").open()
 				end,
-				desc = "Laravel: Open Laravel Picker",
+				desc = "Open BetterTerm 0",
 			},
 			{
-				"<c-g>",
+				mode = { "n", "t" },
+				"<C-.>",
 				function()
-					Laravel.commands.run("view:finder")
+					require("betterTerm").open(1)
 				end,
-				desc = "Laravel: Open View Finder",
+				desc = "Open BetterTerm 1",
 			},
 			{
-				"<leader>la",
+				"<leader>tt",
 				function()
-					Laravel.pickers.artisan()
+					require("betterTerm").select()
 				end,
-				desc = "Laravel: Open Artisan Picker",
-			},
-			{
-				"<leader>lt",
-				function()
-					Laravel.commands.run("actions")
-				end,
-				desc = "Laravel: Open Actions Picker",
-			},
-			{
-				"<leader>lr",
-				function()
-					Laravel.pickers.routes()
-				end,
-				desc = "Laravel: Open Routes Picker",
-			},
-			{
-				"<leader>lh",
-				function()
-					Laravel.run("artisan docs")
-				end,
-				desc = "Laravel: Open Documentation",
-			},
-			{
-				"<leader>lm",
-				function()
-					Laravel.pickers.make()
-				end,
-				desc = "Laravel: Open Make Picker",
-			},
-			{
-				"<leader>lc",
-				function()
-					Laravel.pickers.commands()
-				end,
-				desc = "Laravel: Open Commands Picker",
-			},
-			{
-				"<leader>lo",
-				function()
-					Laravel.pickers.resources()
-				end,
-				desc = "Laravel: Open Resources Picker",
-			},
-			{
-				"<leader>lp",
-				function()
-					Laravel.commands.run("command_center")
-				end,
-				desc = "Laravel: Open Command Center",
-			},
-			{
-				"gf",
-				function()
-					local ok, res = pcall(function()
-						if Laravel.app("gf").cursorOnResource() then
-							return "<cmd>lua Laravel.commands.run('gf')<cr>"
-						end
-					end)
-					if not ok or not res then
-						return "gf"
-					end
-					return res
-				end,
-				expr = true,
-				noremap = true,
+				desc = "Select terminal",
 			},
 		},
-		event = { "VeryLazy" },
 		opts = {
-			lsp_server = "phpactor", -- "phpactor | intelephense"
-			features = {
-				pickers = {
-					provider = "snacks", -- "snacks | telescope | fzf-lua | ui-select"
-				},
-			},
+			position = "bot",
+			size = 4,
+			jump_tab_mapping = "<A-$tab>",
 		},
 	},
 }

@@ -41,33 +41,15 @@ vim.go.splitright = true
 vim.go.cmdheight = 0 -- <-THIS WORKS!
 vim.wo.cursorline = true
 
-vim.go.shiftwidth = 3
-vim.go.softtabstop = 3
-vim.go.tabstop = 3
+vim.go.expandtab = false
+vim.go.shiftwidth = 4
+vim.go.softtabstop = 4
+vim.go.tabstop = 4
 
 vim.wo.number = true
 vim.wo.numberwidth = 4
 -- -------------------------------------------------------------------------( end of VIM config )--
 -- ------------------------------------------------------------------------------------------------
-
--- CONFIGURING VIM FOR VIMTEX epic if u ask me
-vim.g.vimtex_view_method = "zathura"
-vim.g.vimtex_compiler_method = "latexmk"
-vim.g.UltiSnipsExpandTrigger = "<tab>"
-vim.g.UltiSnipsJumpForwardTrigger = "<c-b>"
-vim.g.UltiSnipsJumpBackwardTrigger = "<c-z>"
-
--- TIDAL CYCLES autocompletion setup ----------------------------------------
---autocmd FileType tidal call s:tidal_abbr()
---function! s:tidal_abbr()
---    inoreabbr billybd "[t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~]"
---    inoreabbr billysn "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
---    inoreabbr billych "[t ~ t ~] [t ~ t ~] [t ~ t ~] [t ~ t ~]"
---    inoreabbr bluemondaybd "[t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~]"
---    inoreabbr bluemondaysn "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
---    inoreabbr bluemondaycp "[~ ~ ~ ~] [t ~ ~ ~] [~ ~ ~ ~] [t ~ ~ ~]"
---    inoreabbr bluemondayoh "[~ ~ t ~] [~ ~ t ~] [~ ~ t ~] [~ ~ t ~]"
---endfunction
 
 -- lazy.nvim configuration ------------------------------------------------------------------------
 require("lazy").setup({
@@ -91,19 +73,6 @@ require("lazy").setup({
 	},
 	checker = { enabled = true },
 	rocks = { enabled = false },
-})
-
--- CONFORM SETUP ----
-require("conform").setup({
-	formatters_by_ft = {
-		lua = { "stylua" },
-		-- Conform will run multiple formatters sequentially
-		python = { "isort", "black" },
-		--         -- You can customize some of the format options for the filetype (:help conform.format)
-		rust = { "rustfmt", lsp_format = "fallback" },
-		--                 -- Conform will run the first available formatter
-		javascript = { "prettierd", "prettier", stop_after_first = true },
-	},
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
