@@ -16,7 +16,8 @@
 ; ######################
 ; var ##################
 ; ######################
-(deflisten hostname `cat /etc/hostname`);"SIDONIA")
+(deflisten hostname `cat /etc/hostname | tr '[:lower:]' '[:upper:]'`);"SIDONIA")
+;(deflisten islaptop ``)
 ;(defvar vol_level "0%" )
 
 
@@ -42,21 +43,10 @@
 
 ; {{{ CLOCK WIDGET (includes date and username) 
 (defwidget clock []
-  (box :class "clockbox" 
-       :halign "start"
-       :space-evenly false
-        (label :class "hostlabel"  
-               :text hostname      
-                                       
-        )
-        (label :class "datelabel"
-          :markup ""
-          :text {formattime(EWW_TIME, "%m.%d")}
-
-        )
-        (label :class "timelabel"
-          :text {formattime(EWW_TIME, "%H:%M")}
-        )
+  (box :class "clockbox" :halign "start" :space-evenly false
+    (label :class "hostlabel"  :text hostname )
+;    (label :class "datelabel" :markup "" :text {formattime(EWW_TIME, "%m.%d")})
+    (label :class "timelabel" :text {formattime(EWW_TIME, "%m.%d %H:%M")} )
   )
 )
 ;}}}
@@ -98,26 +88,12 @@
 
     ;SYSTRAY
     ;////////////UNDER DEVELOPMENT/////////////
-    (systray 
-      :spacing 2 
-      :orientation "h" 
-      :space-evenly true 
-    )
+    (systray :spacing 2 :orientation "h" :space-evenly true )
 
     ;VOLUME/BRIGHTNESS INDICATOR
-    (box
-      :space-evenly true
-      :class "VBIndicator"
-      (progress
-        :class "VIndicator"
-        :value 50
-        :orientation "h"
-      )
-      (progress
-        :class "BIndicator"
-        :value 50
-        :orientation "h"
-      )
+    (box :space-evenly true :class "vbBox"
+
+      
     );box.end --VOLUME/BRIGHTMESS
 
 

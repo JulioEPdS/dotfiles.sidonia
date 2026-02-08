@@ -142,6 +142,11 @@ $victor: 'VictorMonoNerdFontMono';
 .systembox{
   all: unset;}
 
+.vbBox{
+  color: $white1; 
+  padding: 0 10;
+  border-color: $white1;
+}
 .capslabelon {
   //font-family: $victor;
   background-color: $yellow1;//$color7;
