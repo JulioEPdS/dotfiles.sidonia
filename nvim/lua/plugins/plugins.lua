@@ -57,6 +57,8 @@ return {
 				markdown = { "prettier" },
 				jsonc = { "prettier" },
 				lua = { "stylua" },
+				css = { "prettier" },
+				scss = { "prettier" },
 			},
 			-- Define the custom command for deno_fmt
 			-- Optional: set up format-on-save
@@ -120,5 +122,14 @@ return {
 			size = 4,
 			jump_tab_mapping = "<A-$tab>",
 		},
+	}, --BETTERTERM END
+
+	{
+		"atiladefreitas/dooing",
+		config = function()
+			require("dooing").setup({
+				-- your custom config here (optional)
+			})
+		end,
 	},
 }

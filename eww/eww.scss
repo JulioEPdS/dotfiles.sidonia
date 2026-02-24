@@ -1,214 +1,207 @@
 // vim:fileencoding=utf-8:foldmethod=marker
 //
-//       __   __  __  __   __  __  __        ____    ___     ____    ____  
-//     /'__`\/\ \/\ \/\ \ /\ \/\ \/\ \      /',__\  /'___\  /',__\  /',__\ 
+//       __   __  __  __   __  __  __        ____    ___     ____    ____
+//     /'__`\/\ \/\ \/\ \ /\ \/\ \/\ \      /',__\  /'___\  /',__\  /',__\
 //    /\  __/\ \ \_/ \_/ \\ \ \_/ \_/ \ __ /\__, `\/\ \__/ /\__, `\/\__, `\
 //    \ \____\\ \___x___/' \ \___x___/'/\_\\/\____/\ \____\\/\____/\/\____/
-//     \/____/ \/__//__/    \/__//__/  \/_/ \/___/  \/____/ \/___/  \/___/ 
-//                                                                          
+//     \/____/ \/__//__/    \/__//__/  \/_/ \/___/  \/____/ \/___/  \/___/
+//
 
-//: COLORS {{{
+// =====================
+// COLORS
+// =====================
 
 $foreground: #c6c8d1;
 $background: #161821;
-$transparent: rgba($background, 0.80);
+$transparent: rgba($background, 0.8);
 
-$selection_background: #1e2132;
-$selection_foreground: #c6c8d1;
-  
 $cursor: #d2d4de;
- 
-//black
-$black1: #1e2132;
-$black2: #6b7089;
- 
-//red
-$red1: #e27878;
-$red2: #e98989;
 
-//green
-$green1: #b4be82;
-$green2: #c0ca8e;
+$colors: (
+  black1: #1e2132,
+  black2: #6b7089,
+  red1: #e27878,
+  red2: #e98989,
+  green1: #b4be82,
+  green2: #c0ca8e,
+  yellow1: #eada7b,
+  yellow2: #e9b189,
+  blue1: #7ae0e0,
+  blue2: #82f0f4,
+  magenta1: #a093c7,
+  magenta2: #ada0d3,
+  cyan1: #89b8c2,
+  cyan2: #95c4ce,
+  white1: #c6c8d1,
+  white2: #d2d4de,
+);
 
-//yellow/orange
-$yellow1: #EADA7B;
-$yellow2: #e9b189;//#F8F7A6;
+// Helper para acceder a colores
+@function c($name) {
+  @return map-get($colors, $name);
+}
 
-//blue
-$blue1: #7AE0E0;
-$blue2: #82F0F4;
- 
-//magenta
-$magenta1: #a093c7;
-$magenta2: #ada0d3;
+// =====================
+// GLOBALS
+// =====================
 
-//
-$cyan1: #89b8c2;
-$cyan2: #95c4ce;
- 
-//white
-$white1: #c6c8d1;
-$white2: #d2d4de;
-//: }}}
-// FONTS {{{
+$victor: "VictorMonoNerdFontMono";
 
-$victor: 'VictorMonoNerdFontMono';
+$padding-x: 0 10;
+$margin-base: 2;
+$border-width: 1;
 
+// =====================
+// MIXINS & PLACEHOLDERS
+// =====================
 
-// }}}
+%base-reset {
+  all: unset;
+  font-family: $victor;
+  background-color: $transparent;
+}
+
+%boxed {
+  padding: $padding-x;
+  margin-bottom: $margin-base;
+  margin-left: 2;
+  border-width: $border-width;
+  border-style: solid;
+}
+
+@mixin bordered($color) {
+  color: $color;
+  border-color: $color;
+}
+
+@mixin state-box($fg, $bg, $border: $fg) {
+  color: $fg;
+  background-color: $bg;
+  border-color: $border;
+}
+
+// =====================
+// BASE
+// =====================
 
 * {
-    all: unset; // Unsets everything so you can style everything from scratch
-    font-family: $victor;
-    background-color: $transparent;
-    //color: $white1;
-//    font-family: 'Victor Mono';
-  }
+  @extend %base-reset;
+}
 
 .bar {
   all: unset;
 }
 
-//: CLASSES {{{
+// =====================
+// CLOCK
+// =====================
 
-//: CLASSES FOR CLOCK WIDGET {{{
 .clockbox {
   all: unset;
-  //text-transform: uppercase;
 }
+
 .hostlabel {
+  @extend %boxed;
+  @include state-box($transparent, c(white2));
   font-style: italic;
-  background-color: $white2;//$color7;
-  color: $transparent;
   font-weight: bold;
-  //font-variant-ligatures: ;
-  padding: 0 10;
-  margin-bottom: 2;
 }
-.datelabel {
-  //text-transform: lowercase;
-  //background-color: $transparent; //$background;//$color7;
-  //font: 16px "VictorMono-Bold";
-  color: $white1;
-  font-weight: bold; 
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $white1;
-  border-width: 1;
-  border-style: solid;
 
-}
+.datelabel,
 .timelabel {
-  //background-color: $transparent; //$color7;
-  color: $white1;
-  font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $white1;
-  border-width: 1;
-  border-style: solid;
+  @extend %boxed;
+  @include bordered(c(white1));
+  font-weight: bold;
 }
-//: }}}
 
-//: {{{ WORKSPACE CSS
+.timelabel {
+  font-weight: bolder;
+}
+
+// =====================
+// WORKSPACES
+// =====================
+
 .workspaces {
+  @extend %boxed;
   font-weight: bolder;
   padding: 0 30;
-  margin-bottom: 2;
-  //margin-left: 2;
-  border-color: $white1;
-  border-width: 1;
-  border-style: solid;
-  
-    .workspace-button {
-  
-        &.exists,
-          &:hover {
-          color: gray;
-  
-          &.focused {
-            color: $white1;
-          }
-        }
+  @include bordered(c(white1));
+
+  .workspace-button {
+    &.exists,
+    &:hover {
+      color: gray;
+
+      &.focused {
+        color: c(white1);
+      }
     }
- 
+  }
 }
 
-//: }}}
+// =====================
+// SYSTEM
+// =====================
 
-//: {{{ SYSTEMCSS
-.systembox{
-  all: unset;}
-
-.vbBox{
-  color: $white1; 
-  padding: 0 10;
-  border-color: $white1;
+.systembox {
+  all: unset;
 }
+
+.vbBox {
+  padding: $padding-x;
+  @include bordered(c(white1));
+}
+
+// CAPS STATES
+
 .capslabelon {
-  //font-family: $victor;
-  background-color: $yellow1;//$color7;
-  color: $transparent;
+  @extend %boxed;
+  @include state-box($transparent, c(yellow1));
   font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $yellow1;
-  border-width: 1;
-  border-style: solid;
 }
-.iconcolor-on{
+
+.capslabeloff {
+  @extend %boxed;
+  @include bordered(grey);
+  font-weight: bolder;
+  background-color: $transparent;
+}
+
+// ICON STATES
+
+.iconcolor-on {
   color: $transparent;
-  background-color: $yellow1;
+  background-color: c(yellow1);
 }
-.iconcolor-off{
+
+.iconcolor-off {
   color: grey;
   background-color: $transparent;
 }
-.capslabeloff {
-  background-color: $transparent;//$color7;
-  color: grey;
-  font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: grey;
-  border-width: 1;
-  border-style: solid;
-}
 
-.batteryred {
-  color: $red1;
-  font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $red2;
-  border-width: 1;
-  border-style: solid;  
-}
-.batteryorange {
-  color: $yellow1;
-  font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $yellow1;
-  border-width: 1;
-  border-style: solid;  
-}
-.batterygreen {
-  color: $green1;
-  font-weight: bolder;
-  padding: 0 10;
-  margin-bottom: 2;
-  margin-left: 2;
-  border-color: $green1;
-  border-width: 1;
-  border-style: solid;  
-}
-//:}}}
+// BATTERY STATES (usando mapa dinámico)
 
-//: }}}
+$battery-states: (
+  red: (
+    c(red1),
+    c(red2),
+  ),
+  orange: (
+    c(yellow1),
+    c(yellow1),
+  ),
+  green: (
+    c(green1),
+    c(green1),
+  ),
+);
+
+@each $name, $values in $battery-states {
+  .battery#{$name} {
+    @extend %boxed;
+    color: nth($values, 1);
+    border-color: nth($values, 2);
+    font-weight: bolder;
+  }
+}
