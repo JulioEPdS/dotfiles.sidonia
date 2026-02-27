@@ -1,3 +1,4 @@
+-- vim:fileencoding=utf-8:foldmethod=marker
 --         ___                                               ___
 --        /\_ \                     __                      /\_ \
 --   _____\//\ \    __  __     __  /\_\     ___      ____   \//\ \    __  __     __
@@ -12,10 +13,17 @@
 -- -----------------------------------------------------------------------------------
 
 return {
+	--: {{{ ONE LINERS
 	--Devicons
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
-
-	--NvimTree
+	--Lualine
+	{ "nvim-lualine/lualine.nvim" },
+	--yuck.vim
+	--to human read the .yuck files (used by eww)
+	{ "elkowar/yuck.vim" },
+	--: }}}
+	--NvimTree --------------------------------(<leader>ft)-
+	--: {{{
 	{
 		"nvim-tree/nvim-tree.lua",
 		--<space> + <f><t> toggles tree
@@ -25,26 +33,9 @@ return {
 		opts = {},
 		lazy = true,
 	},
-
-	--Lualine
-	{
-		"nvim-lualine/lualine.nvim",
-	},
-	--yuck.vim
-	--to human read the .yuck files (used by eww)
-	{
-		"elkowar/yuck.vim",
-		--lazy = true,
-	},
-
-	--Vim-visual-multi
-	{
-		"mg979/vim-visual-multi",
-		lazy = true,
-	},
-
-	--CONFORM --------------------------------------------
-
+	--: }}}
+	--CONFORM ---------------------------------(<leader>lf)-
+	--: {{{
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -78,9 +69,9 @@ return {
 			},
 		},
 	},
-
-	--
-	--ranger inside of nvim, kinda usefull, but ... limited, better sticking with nvim-tree
+	--: }}}
+	--RANGER ----------------------------------(<leader>fr)-
+	--: {{{
 	{
 		"kelly-lin/ranger.nvim",
 		keys = {
@@ -88,8 +79,9 @@ return {
 		},
 		opts = { enable_cmds = true },
 	},
-
-	-- BETTER TERM
+	--: }}}
+	-- BETTER TERM ----------------------------(<leader>, && <leader>.)-
+	--: {{{
 	{
 		"CRAG666/betterTerm.nvim",
 		keys = {
@@ -122,8 +114,10 @@ return {
 			size = 4,
 			jump_tab_mapping = "<A-$tab>",
 		},
-	}, --BETTERTERM END
-
+	},
+	--: }}}
+	--DOOING ----------------------------------(<leader>td)-
+	--: {{{
 	{
 		"atiladefreitas/dooing",
 		config = function()
@@ -132,4 +126,22 @@ return {
 			})
 		end,
 	},
-}
+	--: }}}
+	--NvimColorizer ---------------------------
+	--: {{{
+	{
+		"catgoose/nvim-colorizer.lua",
+		event = "BufReadPre",
+		opts = { -- set to setup table
+		},
+	},
+	--: }}}
+} --RETURN final
+--------------------------------------------------------------------------------------------------------------------
+------------------------------- [UNDER TESTING/SETUP NOT CLEAR]-----------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--Vim-visual-multi
+--{
+--	"mg979/vim-visual-multi",
+--	lazy = true,
+--},

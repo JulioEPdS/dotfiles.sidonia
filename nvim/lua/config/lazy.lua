@@ -48,7 +48,10 @@ vim.go.tabstop = 4
 
 vim.wo.number = true
 vim.wo.numberwidth = 4
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamedplus" -- This makes clipboard compatible inside and outside nvim
+
+vim.go.termguicolors = true
+
 -- -------------------------------------------------------------------------( end of VIM config )--
 -- ------------------------------------------------------------------------------------------------
 
@@ -81,4 +84,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	callback = function(args)
 		require("conform").format({ bufnr = args.buf })
 	end,
+})
+
+-- Use default for all filetypes with overrides for css and html
+require("colorizer").setup({
+	filetypes = {
+		"*", -- Highlight all files, but customize some others.
+		css = { rgb_fn = true, oklch_fn = true }, -- Enable parsing rgb(...) and oklch(...) functions in css.
+		html = { names = false }, -- Disable parsing "names" like Blue or Gray
+	},
 })
