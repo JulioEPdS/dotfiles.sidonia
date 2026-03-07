@@ -35,6 +35,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.gmaplocalleader = "\\"
 
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
 vim.cmd([[set whichwrap+=<,>,h,l]]) --this enables line jumping using h or l at end of line
 vim.wo.wrap = false -- <- THIS WORKS
 vim.go.splitright = true
