@@ -80,6 +80,7 @@
 
 ;{{{ QUICK SYS INFO systray, caps status, battery level
 (defpoll caps_value :interval "0.2s" `cat /sys/class/leds/input*:capslock/brightness`)
+(defpoll volume_level :interval "0.2s" `pulsemixer --get-volume`)
 
 ;(deflisten caps_value :initial 0 `tail -f /sys/class/leds/input*:capslock/brightness`)  
 (defwidget qsysinfo []

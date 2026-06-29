@@ -38,57 +38,55 @@ $white1: #c6c8d1;
 $white2: #d2d4de;
 */
 
-*{	
-	font-family: "VictorMonoNerdFontMono";
-	font-weight: 500;
-	border: none;
-
+* {
+  font-family: "VictorMonoNerdFontMono";
+  font-weight: 500;
+  border: none;
 }
 
 window {
-	
-	margin: 5px;
-	border: 2px solid #c6c8d1;
-	background-color: rgba(16,18,21,0.88);
+  margin: 5px;
+  border: 1px solid #c6c8d1;
+  background-color: rgba(16, 18, 21, 0.88);
 }
 
 #input {
-	font-style: italic;
-	font-weight: bold;
-	margin: 5px;
-	color: #c6c8d1;
-	border: 2px solid #c6c8d1;
-	border-radius: 0;
-	background-color: #161821;
+  font-style: italic;
+  font-weight: bold;
+  margin: 5px;
+  color: #c6c8d1;
+  border: 2px solid #c6c8d1;
+  border-radius: 0;
+  background-color: #161821;
 }
 
 #inner-box {
-	margin: 0px;
-	border: none;
-	background-color: transparent;
+  margin: 0px;
+  border: none;
+  background-color: transparent;
 }
 
 #outer-box {
-	margin: 0px;
-	border: none;
-	background-color: transparent;
+  margin: 0px;
+  border: none;
+  background-color: transparent;
 }
 
 #scroll {
-	margin: 5px;
-	border: none;
-	background-color: transparent;
+  margin: 5px;
+  border: none;
+  background-color: transparent;
 }
 
 #text {
-	color: #c6c8d1;
-	margin: 5px;
-	/*border: 2px solid #161821;*/
-	background-color: transparent;
+  color: #c6c8d1;
+  margin: 5px;
+  /*border: 2px solid #161821;*/
+  background-color: transparent;
 }
 
 #entry {
-	background-color: transparent;
+  background-color: transparent;
 }
 
 /*
@@ -98,18 +96,17 @@ window {
 }*/
 
 #entry:selected {
-	background-color: transparent;
-	border: 1px solid #91acd1;
+  background-color: transparent;
+  border: 1px solid #91acd1;
 }
 
 #text:selected {
-	background-color: transparent;
-	/*font-weight: bold;*/
-	color: #91acd1;
-	border: none;
+  background-color: transparent;
+  /*font-weight: bold;*/
+  color: #91acd1;
+  border: none;
 }
 
 /*#input:focus {
 	border: 1px solid #91acd1;
 }*/
-
