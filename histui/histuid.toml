@@ -1,0 +1,42 @@
+# Logging: debug, info, warn, error
+log_level = "info"
+
+[display]
+position = "top-center"
+max_visible = 4
+offset_x = 0
+offset_y = 320
+image_data_preview_size = "100 KiB"  # Filter small images like profile pics
+layer = "top"                        # Wayland layer: background, bottom, top, overlay
+
+[timeouts]
+# Honor whatever the application requests (default for low/normal)
+low = "0"
+normal = "0"
+
+# Critical notifications never expire (default)
+critical = "never"
+
+# Fallback timeout when client says "server decides" (-1)
+fallback = "5s"
+
+[behavior]
+stack_duplicates = true
+pause_on_hover = true
+
+[dnd]
+enabled = false           # Start with DnD off
+suppress_critical = false # Critical notifications bypass DnD (default)
+
+[mouse]
+left = "dismiss"
+middle = "do-action"
+right = "close-all"
+
+[audio]
+enabled = true
+volume = 80
+
+[history]
+max_notifications = 500   # 0 = unlimited
+store_images = false       # Required for replay with images

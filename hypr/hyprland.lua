@@ -32,13 +32,9 @@ hl.monitor({
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 
--- exec-once = $terminal
--- exec-once = nm-applet &
--- exec-once = waybar & hyprpaper & firefox
-
 hl.on("hyprland.start", function()
 	hl.exec_cmd("hyprpaper")
-	hl.exec_cmd("eww open bar & nm-tray")
+	hl.exec_cmd("eww open bar & nm-tray & histuid")
 end)
 
 --OLD SYNTAX
@@ -252,5 +248,22 @@ require("keybinds")
 --#############################
 --## WINDOWS AND WORKSPACES ###
 --#############################
+
+-- Layer rules also return a handle.
+-- local overlayLayerRule = hl.layer_rule({
+--     name  = "no-anim-overlay",
+--     match = { namespace = "^my-overlay$" },
+--     no_anim = true,
+-- })
+-- overlayLayerRule:set_enabled(false)
+
+-- !!!!!!!!!!!!!!!!!!!!!!! WRNNG !!!!!!!!!!!!!!!!!!!!!!!!!
+-- REVISION REQUIRED histui blur layer rule
+--local histuiBlur = hl.layer_rule({
+--	name = "histui-notif-blur",
+--	match = { class = "histui-notification" },
+--	blur = true,
+--})
+--histuiBlur:set_enabled(false)
 
 --exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP

@@ -126,10 +126,11 @@ $border-width: 1;
 .workspaces {
   @extend %boxed;
   font-weight: bolder;
-  padding: 0 30;
+  padding: 0 20 0 12;
   @include bordered(c(white1));
 
   .workspace-button {
+    padding: 0 0;
     &.exists,
     &:hover {
       color: gray;

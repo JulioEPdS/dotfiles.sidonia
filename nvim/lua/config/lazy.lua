@@ -34,6 +34,7 @@ vim.opt.rtp:prepend(lazypath)
 -- GENERAL VIM CONFIGURATION ----------------------------------------------------------------------
 vim.g.mapleader = " "
 vim.gmaplocalleader = "\\"
+vim.g.tidal_target = "terminal"
 
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
