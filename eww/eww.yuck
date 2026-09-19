@@ -43,10 +43,33 @@
 
 ; {{{ CLOCK WIDGET (includes date and username) 
 (defwidget clock []
-  (box :class "clockbox" :halign "start" :space-evenly false
-    (label :class "hostlabel"  :text hostname )
+  (box 
+    :class "clockbox" 
+    :halign "start" 
+    :space-evenly false
+    
+    (label 
+      :class "hostlabel"  
+      :text hostname 
+    )
 ;    (label :class "datelabel" :markup "" :text {formattime(EWW_TIME, "%m.%d")})
-    (label :class "timelabel" :text {formattime(EWW_TIME, "%m.%d %H:%M")} )
+    (box 
+      :hexpand true
+      :halign "start" 
+      :space-evenly false 
+      :class "timelabel" 
+      :spacing 10
+      
+      (label 
+        :xalign 0.5
+        :class "todaylabel" 
+        :text "日"
+      )
+
+      (label :xalign 0.5 
+        :text {formattime(EWW_TIME, "%m/%d ->> %H:%M")} 
+      )
+    )
   )
 )
 ;}}}
@@ -61,8 +84,8 @@
     ;:onscroll "echo {} | sed -e 's/up/-1/g' -e 's/down/+1/g' | xargs hyprctl dispatch workspace"
     (box :class "workspaces"
          :spacing 20
+         :space-evenly true
          :orientation "horizontal"
-         :halign "center"
          (for workspaces in {workspaces_json.workspaces}
           (workspace-button :id workspaces))
     )
@@ -79,67 +102,79 @@
 ;}}}
 
 ;{{{ QUICK SYS INFO systray, caps status, battery level
-(defpoll caps_value :interval "0.2s" `cat /sys/class/leds/input*:capslock/brightness`)
-(defpoll volume_level :interval "0.2s" `pulsemixer --get-volume`)
+(defpoll caps_value :interval "900s" `cat /sys/class/leds/input*:capslock/brightness`)
+(defpoll volume_level :interval "900s" `pulsemixer --get-volume | awk '{ print $1}'`)
 
 ;(deflisten caps_value :initial 0 `tail -f /sys/class/leds/input*:capslock/brightness`)  
 (defwidget qsysinfo []
   
-  (box :halign "end" :class "systembox" :space-evenly false
+  (box :halign "end" :space-evenly false
 
     ;SYSTRAY
     ;////////////UNDER DEVELOPMENT/////////////
-    (systray :spacing 2 :orientation "h" :space-evenly true )
+    (systray :class "systray" :spacing 5 :orientation "h" :space-evenly true )
+
+
+    ;CAPS INDICATOR
+    (label :hexpand true :halign "center"
+      :class {caps_value != 1 ? "capslabelon" : "capslabeloff"}
+;      (image :icon { caps_value != 0 ? "capslock-enabled-symbolic" : "capslock-disabled-symbolic"} :class { caps_value != 0 ? "iconcolor-on" : "iconcolor-off"} :icon-size "large-toolbar" );image.end
+      :text "上"
+    );box.end
+
 
     ;VOLUME/BRIGHTNESS INDICATOR
-    (box :space-evenly true :class "vbBox"
+    (box :space-evenly false 
+         :spacing 10
+         :class "volumebox" 
+         :halign "start"  
 
+      (label :class "volumelabel" :text "音")
+      (label :text {volume_level})
       
     );box.end --VOLUME/BRIGHTMESS
 
 
-    ;CAPS INDICATOR
-    (box 
-    :space-evenly false
-    :class {caps_value != 0 ? "capslabelon" : "capslabeloff"}
-      (image :icon { caps_value != 0 ? 
-                        "capslock-enabled-symbolic" 
-                        : "capslock-disabled-symbolic"
-                    }
-             :class { caps_value != 0 ? 
-                        "iconcolor-on" 
-                        : "iconcolor-off"
-                    }
-             :icon-size "large-toolbar"
-      );image.end
-    );box.end
-
 
     ;BATTERY INDICATOR
-    (box :orientation "h" :space-evenly false :spacing 5 
+    (box :orientation "h" :space-evenly false :spacing 10 
       ;Basically just changing color via css depending on the battery level
       ;Remember the -<idk what is called here>- function  "eval ? a : b"
-      :class "${EWW_BATTERY.BAT0.capacity > 50 ? 
+      :class "${EWW_BATTERY.BAT0.status == "Charging" && EWW_BATTERY.BAT0.capacity != 100 ?
+              "batteryblue" ;if charging and not 100
+               : "${EWW_BATTERY.BAT0.capacity > 50 ? ;if more than 50
                   "batterygreen"  
-                  : "${EWW_BATTERY.BAT0.capacity > 15 ?
+                  : "${EWW_BATTERY.BAT0.capacity > 15 ? ;if more than 15 but less than 50
                         "batteryorange" 
-                        : "batteryred" 
-                      }" 
-              }"
+                        : "batteryred" ;if less than 50 and less than 15
+                      }"
+              }";firstlambda.end
+      }"
 
-      (label :class "batterylabel"
+      (label  
+        :justify 0.5
+        :class "${EWW_BATTERY.BAT0.status == "Charging" && EWW_BATTERY.BAT0.capacity != 100 ?
+              "batterylabelblue" ;if charging and not 100
+               : "${EWW_BATTERY.BAT0.capacity > 50 ? ;if more than 50
+                  "batterylabelgreen"  
+                  : "${EWW_BATTERY.BAT0.capacity > 15 ? ;if more than 15 but less than 50
+                        "batterylabelorange" 
+                        : "batterylabelred" ;if less than 50 and less than 15
+                      }"
+              }";firstlambda.end
+      }"
         ;:icon "battery-symbolic"
         ;in order to asing the color based on percentage, a function inside a func to add three posible states
         ;here you set the class name that will be readed/asigned -~from file.scss~- to the element 
         ;:class "${EWW_BATTERY.BAT0.capacity > 50 ? "batterygreen"  : "${EWW_BATTERY.BAT0.capacity > 15 ? "batteryorange" : "batteryred" }"  }" 
-        :text  "${EWW_BATTERY.BAT0.status == "Charging" ? 
-                  "CHARGING -| ${EWW_BATTERY.BAT0.capacity}% |-" 
-                  : "${EWW_BATTERY.BAT0.capacity <= 5 ? 
-                        "CRITICAL -| ${EWW_BATTERY.BAT0.capacity}% |-" 
-                        : "RSOC -| ${EWW_BATTERY.BAT0.capacity}% |-"
-                      }";secondlambda.end
-                }";firstlambda.end 
+        :text  "${EWW_BATTERY.BAT0.capacity <= 5 ? 
+                        "危" 
+                        : "電"
+                      }"
       );label.end
+      (label  
+        :text "${EWW_BATTERY.BAT0.capacity}"
+        )
     );box.end -- BATTERY
   );mainbox.end
 );defwidwet.end

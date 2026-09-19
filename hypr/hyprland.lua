@@ -34,7 +34,7 @@ hl.monitor({
 
 hl.on("hyprland.start", function()
 	hl.exec_cmd("hyprpaper")
-	hl.exec_cmd("eww open bar & nm-tray & histuid")
+	hl.exec_cmd("eww open bar & nm-applet --indicator & histuid")
 end)
 
 --OLD SYNTAX
@@ -53,7 +53,7 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.env("XCURSOR_THEME", "phinger-cursors-light")
 
-hl.env("QT_QPA_PLATFORMTHEME", "gtk3")
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
@@ -256,6 +256,8 @@ require("keybinds")
 --     no_anim = true,
 -- })
 -- overlayLayerRule:set_enabled(false)
+
+hl.window_rule({ match = { class = "zen" }, fullscreen_state = "0 0" })
 
 -- !!!!!!!!!!!!!!!!!!!!!!! WRNNG !!!!!!!!!!!!!!!!!!!!!!!!!
 -- REVISION REQUIRED histui blur layer rule

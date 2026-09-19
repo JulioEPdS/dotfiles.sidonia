@@ -74,17 +74,21 @@ hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }))
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind(
 	"XF86AudioRaiseVolume",
-	hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+	hl.dsp.exec_cmd(
+		"wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ && eww update volume_level=$(pulsemixer --get-volume | awk '{ print $1}')"
+	),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86AudioLowerVolume",
-	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+	hl.dsp.exec_cmd(
+		"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-&& eww update volume_level=$(pulsemixer --get-volume | awk '{ print $1}')"
+	),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86AudioMute",
-	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && eww update volume_level=-"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
@@ -101,6 +105,18 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
+--hl.bind("code:66", hl.dsp.exec_cmd("~/dotfiles.sidonia/eww/scripts/caps.sh"))
+
+hl.on("input.keyboard.key", function(keycode, timestamp, state)
+	-- Target only keypresses (state 1), ignoring releases (0) and repeats (2)
+	if state == 1 and keycode == 66 then
+		local handle = io.popen("cat /sys/class/leds/input3::capslock/brightness")
+		local caps_value = handle:read("*a"):gsub("%s+$", "")
+		handle:close()
+
+		os.execute("eww update caps_value=" .. caps_value)
+	end
+end)
 -- Example window rules that are useful
 
 local suppressMaximizeRule = hl.window_rule({

@@ -1,3 +1,4 @@
+-- vim:fileencoding=utf-8:foldmethod=marker
 --    ___                                    ___
 --   /\_ \                                  /\_ \
 --   \//\ \       __     ____    __  __     \//\ \    __  __     __
@@ -13,7 +14,7 @@
 -- AND SETS MOST OF THE IMPORTANT CONFIGS TO MAKE NVIM MORE LIKE THE EDITOR I NEED                                  --
 -- -------------------------------------------------------------------------------------------------------------------
 
----- Bootstrap lazy.nvim --------------------------------------------------------------------------
+--: {{{ LAZY BOOTSTRAP
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -29,9 +30,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
+--: }}}
 
--- ------------------------------------------------------------------------------------------------
--- GENERAL VIM CONFIGURATION ----------------------------------------------------------------------
+--: {{{ GENERAL VIM CONFIGURATION
 vim.g.mapleader = " "
 vim.gmaplocalleader = "\\"
 vim.g.tidal_target = "terminal"
@@ -52,12 +53,11 @@ vim.go.tabstop = 4
 
 vim.wo.number = true
 vim.wo.numberwidth = 4
-vim.opt.clipboard = "unnamedplus" -- This makes clipboard compatible inside and outside nvim
+vim.opt.clipboard = "unnamedplus" -- This makes clipboard shareable inside and outside nvim
 
 vim.go.termguicolors = true
 
--- -------------------------------------------------------------------------( end of VIM config )--
--- ------------------------------------------------------------------------------------------------
+--: }}}
 
 -- lazy.nvim configuration ------------------------------------------------------------------------
 require("lazy").setup({
@@ -68,8 +68,6 @@ require("lazy").setup({
 		-- Colorscheme ------ --
 		-- ---------------------
 		{
-			--HERE I LOAD THE COLORCHEME, since it is essential for
-			--the looks and feels
 			"cocopon/iceberg.vim",
 			lazy = false,
 			priority = 1000,
@@ -83,6 +81,8 @@ require("lazy").setup({
 	rocks = { enabled = false },
 })
 
+--		require("bufferline").setup({})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function(args)
@@ -91,10 +91,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Use default for all filetypes with overrides for css and html
-require("colorizer").setup({
-	filetypes = {
-		"*", -- Highlight all files, but customize some others.
-		css = { rgb_fn = true, oklch_fn = true }, -- Enable parsing rgb(...) and oklch(...) functions in css.
-		html = { names = false }, -- Disable parsing "names" like Blue or Gray
-	},
-})

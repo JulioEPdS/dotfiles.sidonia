@@ -46,11 +46,7 @@ $colors: (
 // =====================
 // : {{{
 $victor: "VictorMonoNerdFontMono";
-
-$padding-x: 0 10;
-$margin-base: 2;
-$border-width: 1;
-//: }}}
+$jp: "VL Gothic"; //: }}}
 // =====================
 // MIXINS & PLACEHOLDERS
 // =====================
@@ -61,12 +57,30 @@ $border-width: 1;
   background-color: $transparent;
 }
 
-%boxed {
-  padding: $padding-x;
-  margin-bottom: $margin-base;
-  margin-left: 2;
-  border-width: $border-width;
+%boxedRoot {
+  padding: 0 10;
+  margin: 0 2 2 0;
+  border-width: 1;
   border-style: solid;
+}
+%boxedRootLabeled {
+  padding: 0 10 0 0;
+  margin: 0 2 2 0;
+  border-width: 1;
+  border-style: solid;
+}
+%boxedButton {
+  padding: 0 5;
+  margin: 0 2 2 0;
+  border-width: 1;
+  border-style: solid;
+}
+%boxedLeft {
+  //FOR ELEMENTS PLACED AT THE LEFT, accent indicator
+  padding: 0 5;
+  border-width: 0;
+  font-family: $jp;
+  font-weight: normal;
 }
 
 @mixin bordered($color) {
@@ -100,7 +114,7 @@ $border-width: 1;
 }
 
 .hostlabel {
-  @extend %boxed;
+  @extend %boxedRoot;
   @include state-box($transparent, c(white2));
   font-style: italic;
   font-weight: bold;
@@ -108,25 +122,26 @@ $border-width: 1;
   margin-left: 0;
 }
 
-.datelabel,
+.todaylabel {
+  @extend %boxedLeft;
+  @include state-box($transparent, c(white1));
+}
+
 .timelabel {
-  @extend %boxed;
+  @extend %boxedRootLabeled;
   @include bordered(c(white1));
   font-weight: bold;
 }
 
-.timelabel {
-  font-weight: bolder;
-}
 // : }}}
 // =====================
 // WORKSPACES
 // =====================
 // : {{{
 .workspaces {
-  @extend %boxed;
+  @extend %boxedRoot;
   font-weight: bolder;
-  padding: 0 20 0 12;
+  padding: 0 20;
   @include bordered(c(white1));
 
   .workspace-button {
@@ -146,39 +161,36 @@ $border-width: 1;
 // SYSTEM
 // =====================
 // : {{{
-.systembox {
-  all: unset;
+.systray {
+  //all: unset;
+  @extend %boxedRoot;
+  @include state-box(c(white2), $transparent, grey);
 }
 
-.vbBox {
-  padding: $padding-x;
-  @include bordered(c(white1));
+// VOLUME LEVEL
+.volumelabel {
+  @extend %boxedLeft;
+  @include state-box($transparent, c(white2));
+}
+.volumebox {
+  @extend %boxedRootLabeled;
+  @include bordered(c(white2));
+  font-weight: bolder;
 }
 
 // CAPS STATES
 
 .capslabelon {
-  @extend %boxed;
-  @include state-box($transparent, c(yellow1));
-  font-weight: bolder;
+  @extend %boxedButton;
+  @include state-box($transparent, c(yellow2), c(yellow2));
+  font-family: $jp;
 }
 
 .capslabeloff {
-  @extend %boxed;
+  @extend %boxedRoot;
   @include bordered(grey);
-  font-weight: bolder;
-  background-color: $transparent;
-}
-
-// ICON STATES
-
-.iconcolor-on {
-  color: $transparent;
-  background-color: c(yellow1);
-}
-
-.iconcolor-off {
-  color: grey;
+  padding: 0 5;
+  font-family: $jp;
   background-color: $transparent;
 }
 
@@ -187,24 +199,32 @@ $border-width: 1;
 $battery-states: (
   red: (
     c(red1),
-    c(red2),
   ),
   orange: (
-    c(yellow1),
     c(yellow1),
   ),
   green: (
     c(green1),
-    c(green1),
+  ),
+  blue: (
+    c(blue1),
   ),
 );
 
 @each $name, $values in $battery-states {
   .battery#{$name} {
-    @extend %boxed;
+    @extend %boxedRootLabeled;
+    margin-right: 0; //NEEDED TO FIX RIGHT MARGIN
     color: nth($values, 1);
-    border-color: nth($values, 2);
+    border-color: nth($values, 1);
     font-weight: bolder;
+  }
+}
+
+@each $name, $values in $battery-states {
+  .batterylabel#{$name} {
+    @extend %boxedLeft;
+    @include state-box($transparent, nth($values, 1));
   }
 }
 // : }}}
