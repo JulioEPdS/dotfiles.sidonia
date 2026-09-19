@@ -110,7 +110,7 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 hl.on("input.keyboard.key", function(keycode, timestamp, state)
 	-- Target only keypresses (state 1), ignoring releases (0) and repeats (2)
 	if state == 1 and keycode == 66 then
-		local handle = io.popen("cat /sys/class/leds/input3::capslock/brightness")
+		local handle = io.popen("cat /sys/class/leds/input*:capslock/brightness")
 		local caps_value = handle:read("*a"):gsub("%s+$", "")
 		handle:close()
 
